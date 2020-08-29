@@ -87,11 +87,12 @@ int main(){
     ListDelete(&list2,1);
     ListDelete(&list2,ListLength(&list2));
     ShowList(list2);
+    return 0;
 }
 
 void Initlist(sequential_list *list){
     list->length = 0;
-    list->Capacity=10;
+    list->Capacity=3;
     list->data = (ElemType*)malloc((list->Capacity)*sizeof(ElemType));
 }
 
@@ -307,7 +308,7 @@ void Resize(sequential_list *list,double times){
     }
     list->Capacity = (int)times*list->Capacity;
     free(list->data);
-    list->data = &newData;
+    list->data = newData;
 }
 
 

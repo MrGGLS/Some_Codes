@@ -4,7 +4,7 @@ int main(){
     
     printf("tell me your name: \n");
     scanf("%s",name);
-    printf("welcome to vscode, %s",name);
+    printf("Hi %s, welcome to vscode!",name);
     return 0;
     
 }

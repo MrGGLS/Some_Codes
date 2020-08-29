@@ -13,7 +13,7 @@ void InsertNode(node* head, int i, ElemType e);//insert a new node in appointed 
 void DeleteNode(node* head, int i);//delete node by index
 void ShowList(node* head);//print all elements in this list
 ElemType GetElem(node* head, int i);//get data by index
-
+void DeleteList(node* head);//make your list empty
 
 int main(){
     node* head = InitNode();
@@ -38,6 +38,9 @@ int main(){
     printf("%d\n",GetElem(head,1));
     printf("%d\n",GetElem(head,3));
     printf("%d\n",GetElem(head,5));
+    printf("test DeleteList()\n");
+    DeleteList(head);
+    ShowList(head);
     return 0;
 }
 
@@ -104,6 +107,9 @@ void ShowList(node* head){
     if(head==NULL)
         return ERROR;
     node *p = head->next;
+    if(p==NULL){
+        return ERROR;
+    }
     while(p->next!=NULL){
         printf("%d->",p->data);
         p = p->next;
@@ -128,5 +134,16 @@ ElemType GetElem(node* head, int i){
     }
 }
 
+void DeleteList(node* head){
+    node* p = InitNode();
+    node* q = InitNode();
+    p = head->next;
+    while(p){
+        q = p->next;
+        free(p);
+        p = q;
+    }
+    head->next = NULL;
+}
 
 
