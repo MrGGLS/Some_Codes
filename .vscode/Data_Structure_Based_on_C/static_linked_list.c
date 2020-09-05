@@ -8,7 +8,7 @@ typedef struct{
     int cur;
 }Component,StaticLinkedList[MAXSIZE];
 
-void InitList(StaticLinkedList *list);//initialize list
+StaticLinkedList* InitList();//initialize list
 int Malloc_SLL(StaticLinkedList *list);//get free cursor
 void InsertNode(StaticLinkedList *list, int i, ElemType e);//insert new node
 int ListLength(StaticLinkedList list);//get length of this list
@@ -17,29 +17,27 @@ void DeleteNode(StaticLinkedList *list,int i);//delete a node by index and relea
 void AddNode(StaticLinkedList *list, ElemType e);//add a new node at the end
 
 int main(){
-    StaticLinkedList *list = (StaticLinkedList*)malloc(MAXSIZE*sizeof(StaticLinkedList));
-    InitList(list);
+    StaticLinkedList *list = NULL;
+    list = InitList();
     printf("=================\n");
-    for(int i=0;i<MAXSIZE;i++)
-        printf("%d\n",list[i]->cur);
     ShowList(list);
     AddNode(list,1);
-    AddNode(list,3);
     AddNode(list,5);
     AddNode(list,7);
     AddNode(list,9);
     printf("test AddNode()\n");
     ShowList(list);
+    free(list);
     return 0;
 }
 
-void InitList(StaticLinkedList *list){
+StaticLinkedList* InitList(){
+    StaticLinkedList *list = (StaticLinkedList*)malloc(sizeof(StaticLinkedList));
     for(int i = 0;i<MAXSIZE-1;i++){
         list[i]->cur = i+1;
-        printf("%d\n",list[i]->cur);
     }
     list[MAXSIZE-1]->cur = 0;
-    printf("%d\n",list[MAXSIZE-1]->cur);
+    return list;
 }
 
 int Malloc_SLL(StaticLinkedList *list){
