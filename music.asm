@@ -1,11 +1,12 @@
+;å„éŸ³ç¬¦å¯¹åº”çš„é¢‘ç‡
 ; 1     2   3   4   5   6   7 
 ;                           123 lower
 ;138    147 165 175 196 220 247 low
 ;262    294 330 349 392 440 494 medi
 ;524    587 659 698 784 880 988 high    
-;ÒôÀÖÊı¾İ
+;éŸ³ä¹æ•°æ®
 data segment
-;Êı×ÖÇúÆ×
+;æ•°å­—æ›²è°±ï¼Œfrom Jaychou
 freq dw 220,262,392,262,175,196,220,392,262
      dw 138,196,392,262,138,392,123,392
      dw 220,262,392,262,175,196,220,392,262
@@ -13,9 +14,9 @@ freq dw 220,262,392,262,175,196,220,392,262
      dw 220,262,392,262,175,196,220,392,262
      dw 138,196,392,262,138,392,123,392
      dw 220,262,392,262,175,196,220,392,262
-     dw 138,196,392,262,138,392,123,262,392,-1
+     dw 138,196,392,262,138,392,123,262,392,-1;-1è¡¨ç¤ºç»“æŸ
 
-;µ¥¸öÒô·ûµÄ³ÖĞøÊ±¼ä
+;å•ä¸ªéŸ³ç¬¦çš„æŒç»­æ—¶é—´ï¼ˆå°±æ˜¯èŠ‚æ‹å•¦ï¼‰
 time dw 12,12,12,12,12,6,6,12,12
      dw 12,12,12,12,12,12,12,12
      dw 12,12,12,12,12,6,6,12,12
@@ -25,23 +26,23 @@ time dw 12,12,12,12,12,6,6,12,12
      dw 12,12,12,12,12,6,6,12,12
      dw 12,12,12,12,12,12,6,6,12
 data ends
-;¿ª³¡ÌáÊ¾½çÃæ
+;æç¤ºå¥
 welcome segment
     wel db 'Welcome to my music player','$';length=26
     pre db 'Press any key to play.....','$';length=26 
     end_w db 'THANK YOU FOR YOUR LISTENING!','$';length=29
 welcome ends
-;Õ»¿Õ¼ä
+;æ ˆç©ºé—´
 stk segment
     db 200h dup(0)
 stk ends
             
-;¶¯»­Ğ§¹ûËùĞè±äÁ¿
+;åŠ¨ç”»æ•ˆæœæ‰€éœ€å˜é‡
 for_anime segment
     count dw 0 
-    p_freq dw 0 
-    h_len dw 80  
-    v_len dw 25      
+    p_freq dw 0 ;æŒ‡å‘å½“å‰æ‰€åœ¨çš„éŸ³ç¬¦
+    h_len dw 80 ;çŸ©å½¢æ¡†çš„é•¿
+    v_len dw 25 ;çŸ©å½¢æ¡†çš„å®½   
 for_anime ends
                 
 code segment
@@ -79,14 +80,14 @@ end_play:
     
     mov ax,4c00h
     int 21h
-    ;Ñİ×àÒ»¸öÒô·û   
+    ;æ¼”å¥ä¸€ä¸ªéŸ³ç¬¦   
     
-sound proc
+sound proc;æ’­æ”¾ä¸€ä¸ªéŸ³ç¬¦ï¼Œå¹¶å»¶è¿Ÿä¸€æ®µæ—¶é—´
     push ax
     push dx
     push cx      
               
-    call anime;//¶¯»­Ğ§¹û£¬ËæÊ±¼ä¶ø±ä... 
+    call anime;//åŠ¨ç”»æ•ˆæœï¼Œéšæ—¶é—´è€Œå˜... 
     
     mov al,0b6h
     out 43h,al
@@ -104,6 +105,7 @@ sound proc
     or al,3
     out 61h,al
     mov dx,[di]
+;ä½ å¯ä»¥é€šè¿‡ä¿®æ”¹cxçš„å€¼æ¥è°ƒæ•´å»¶è¿Ÿæ—¶é—´
 continue:
     mov cx,0efffh
 delay:
@@ -111,7 +113,7 @@ delay:
     loop delay
     dec dx
     jnz continue
-    ;»Ö¸´ÑïÉùÆ÷Ô­Öµ
+    ;æ¢å¤æ‰¬å£°å™¨åŸå€¼
     mov al,ah
     out 61h,al  
     
@@ -120,7 +122,7 @@ delay:
     pop ax
     ret  
 sound endp
-
+;æ¸…ç†å±å¹•
 clean_screen proc             
     push ax
     mov  ah,0fh
@@ -130,7 +132,7 @@ clean_screen proc
     pop ax
     ret       
 clean_screen endp 
-
+;æ¬¢è¿ç•Œé¢
 welcome_ proc     
     push ax
     push bx
@@ -139,14 +141,14 @@ welcome_ proc
     push cx
     push di
     
-    ;×ªÒÆ¹â±êÎ»ÖÃ
+    ;è½¬ç§»å…‰æ ‡ä½ç½®
     mov ah,02h
     mov bh,0
     mov dh,12
     mov dl,40-13
     int 10h
              
-    ;ÏÔÊ¾×Ö·û´®
+    ;æ˜¾ç¤ºå­—ç¬¦ä¸²
     mov ax,welcome
     mov ds,ax
     mov dx,0h
@@ -163,14 +165,14 @@ show_w1:
     inc di
     loop show_w1 
     
-    ;×ªÒÆ¹â±êÎ»ÖÃ
+    ;è½¬ç§»å…‰æ ‡ä½ç½®
     mov ah,02h
     mov bh,0
     mov dh,13
     mov dl,40-13
     int 10h
              
-    ;ÏÔÊ¾×Ö·û´®
+    ;æ˜¾ç¤ºå­—ç¬¦ä¸²
     mov ax,welcome
     mov ds,ax
     mov dx,offset pre
@@ -207,7 +209,7 @@ anime proc
     
     call clean_screen  
            
-    ;»­¾ØĞÎ  
+    ;ç”»çŸ©å½¢  
     mov ax,for_anime
     mov ds,ax 
     mov bx,0b800h
@@ -216,7 +218,7 @@ anime proc
     call draw_rec  
     add al,22
     
-    ;»­ÉÏ±ß  
+    ;ç”»ä¸Šè¾¹  
     mov bx,h_len  
     mov si,0
     mov cx,count  
@@ -245,7 +247,7 @@ ok2:
     add si,2
     loop draw_up 
     
-    ;»­ÏÂ±ß
+    ;ç”»ä¸‹è¾¹
     mov bx,h_len  
     mov si,160*24
     mov cx,count   
@@ -330,7 +332,7 @@ _draw_right:
     pop cx
     ret
 draw_right endp
-  
+;ç”»ä¸­é—´çš„æŸ±å­  
 draw_rec proc
     push di
     push bx
@@ -414,7 +416,7 @@ draw_rec_ret:
     pop di
     ret               
 draw_rec endp  
-
+;ç»“æŸæ•ˆæœ
 end_anime proc  
     push ax
     push ds
@@ -422,7 +424,7 @@ end_anime proc
     push es
     push si
              
-    ;ÏÔÊ¾×Ö·û´®
+    ;æ˜¾ç¤ºå­—ç¬¦ä¸²
     mov ax,welcome
     mov ds,ax
     mov di,offset end_w
@@ -447,7 +449,7 @@ show_end:
     pop ax
     ret
 end_anime endp
-  
+;è¿˜æ˜¯ç”¨æ¥å»¶è¿Ÿæ—¶é—´çš„å°ç¨‹åº  
 end_delay proc      
     push cx
     mov cx,0ffffh
