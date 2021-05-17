@@ -27,9 +27,9 @@ This is a full assembly code.
 ## fib
 This program can get you a fibonacci series and its length is depended on your input number  
 ### keys
-1. ==space==: change the base of the series
-2. ==q/Q==: quit the program (only work when the series appears)
-3. ==others==: restart the program
+1. **space**: change the base of the series
+2. **q/Q**: quit the program (only work when the series appears)
+3. **others**: restart the program
 
 **A demo for this program**  
 
