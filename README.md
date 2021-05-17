@@ -24,3 +24,9 @@ This is a full assembly code.
 **A demo for this program** 
 
 ![img](https://github.com/MrGGLS/Some_Codes/blob/master/music_demo.gif)
+## fib
+This program can get you a fibonacci series and its length is depended on your input number 
+
+**A demo for this program**  
+
+![img](https://github.com/MrGGLS/Some_Codes/blob/master/fib_demo.gif)
