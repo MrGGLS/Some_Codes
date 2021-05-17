@@ -1,33 +1,33 @@
-;ÌáÊ¾ÊäÈë×Ö·û´®
+;æç¤ºè¾“å…¥å­—ç¬¦ä¸²
 inNum segment
     db 'please input a number: ','$' ;length=23 
 inNum ends             
-;¾¯¸æ
+;è­¦å‘Š
 warn segment
     w_range db 'the number is out of range...','$' ;length=29
     w_below_zero db 'the number must be positive!','$' ;length=28 
     w_restart db 'press any key to continue...','$';length=28    
     is_warn dw 0
 warn ends
-;ÉèÖÃÊäÈëÊı×Ö×Ö·ûÕ»
+;è®¾ç½®è¾“å…¥æ•°å­—å­—ç¬¦æ ˆ
 num_input segment
     db 32 dup(0)  
-    top dw 0;Êı×ÖÕ»¶¥ 
-    fib_length dw 0;ĞòÁĞ³¤¶È
+    top dw 0;æ•°å­—æ ˆé¡¶ 
+    fib_length dw 0;åºåˆ—é•¿åº¦
 num_input ends     
-;ÉèÖÃÕ»¶Î
+;è®¾ç½®æ ˆæ®µ
 stk segment
     db 200h dup(0)   
 stk ends
-;ÏÔÊ¾×Ö·û´®  
+;æ˜¾ç¤ºå­—ç¬¦ä¸²  
 
-;ÉèÖÃ16½øÖÆµÄÊı¾İ¶Î
+;è®¾ç½®16è¿›åˆ¶çš„æ•°æ®æ®µ
 radix_16_stk segment
     tmp_16 dd 0
     f1_16 dd 0
     f2_16 dd 0
 radix_16_stk ends
-;ÉèÖÃ10½øÖÆµÄÊı¾İ¶Î   
+;è®¾ç½®10è¿›åˆ¶çš„æ•°æ®æ®µ   
 radix_10_stk segment
     tmp_10 db 5 dup(0)
     f1_10 db 5 dup(0)
@@ -38,17 +38,17 @@ code segment
     
 main proc
 start:      
-;³õÊ¼»¯¸÷¶Î
+;åˆå§‹åŒ–å„æ®µ
     mov ax,stk
     mov ss,ax
     mov sp,0    
     call clean_screen
     
-to_get_num:   
+to_get_num: ï¼›é‡å¼€
     mov ax,num_input
     mov ds,ax
     mov bx,0   
-    mov word ptr ds:[32],bx;Õ»¶¥ÖÃ0 
+    mov word ptr ds:[32],bx;æ ˆé¡¶ç½®0 
     call cancel_warn
     call show_inNum  
     call get_num 
@@ -56,7 +56,7 @@ to_get_num:
     mov dx,1
     jmp short restart
     
-modern:
+pattern:
     cmp dx,1
     je to_print_16
     call print_10       
@@ -65,7 +65,7 @@ modern:
 to_print_16:  
     call print_16     
               
-    ;Òª²»ÒªÖØ¿ª£¬Ğ¡ÀÏµÜ£¿  
+    ;è¦ä¸è¦é‡å¼€ï¼Œå°è€å¼Ÿï¼Ÿ  
 restart:
     mov ah,07h
     int 21h    
@@ -74,7 +74,7 @@ restart:
     je to_end
     cmp al,'Q' ;exit  
     je to_end
-    cmp al,' '  ;ÇĞ»»16½øÖÆ»òÕß10½øÖÆ±í´ï
+    cmp al,' '  ;åˆ‡æ¢16è¿›åˆ¶æˆ–è€…10è¿›åˆ¶è¡¨è¾¾
     jne short to_get_num   
     
     mov bx,warn
@@ -87,10 +87,10 @@ restart:
     cmp dx,1
     je ok1
     mov dx,1
-    jmp short modern  
+    jmp short pattern 
 ok1:
     mov dx,0  
-    jmp short modern
+    jmp short pattern
     
 to_end:
     call end_pro  
@@ -107,7 +107,7 @@ clean_screen proc
     mov  ah,0
     int  10h  
     pop ax
-;ÏÂÃæÕâ¶ÎÔÚemu8086ÌØ±ğÂı£¬²»ÍÆ¼öÊ¹ÓÃ
+;ä¸‹é¢è¿™æ®µåœ¨emu8086ç‰¹åˆ«æ…¢ï¼Œä¸æ¨èä½¿ç”¨
 ;    push bx
 ;    push es
 ;    push cx
@@ -129,7 +129,7 @@ clean_screen proc
 ;    pop bx
     ret       
 clean_screen endp
-                 
+;æç¤ºè¾“å…¥æ•°å­—                
 show_inNum proc
     push ax
     push ds
@@ -138,14 +138,14 @@ show_inNum proc
     push cx
     push di
              
-    ;×ªÒÆ¹â±êÎ»ÖÃ
+    ;è½¬ç§»å…‰æ ‡ä½ç½®
     mov ah,02h
     mov bh,0
     mov dh,12
     mov dl,10
     int 10h
              
-    ;ÏÔÊ¾×Ö·û´®
+    ;æ˜¾ç¤ºå­—ç¬¦ä¸²
     mov ax,inNum
     mov ds,ax
     mov dx,0h
@@ -170,7 +170,7 @@ show_s:
     pop bx
     ret  
 show_inNum endp
-    
+;å¤„ç†è¾“å…¥çš„æ•°å­—ï¼Œå¯å›é€€æ•°å­—    
 get_num proc 
     push ax
     push ds
@@ -191,8 +191,8 @@ get_num_ proc
     push ax  
 _get_num_:
     mov ah,0
-    int 16h;INT16H 00H¶ÁÈ¡¼üÅÌ×Ö·û
-    cmp al,30h  ;Êı×Ö£¿
+    int 16h;INT16H 00Hè¯»å–é”®ç›˜å­—ç¬¦
+    cmp al,30h  ;æ•°å­—ï¼Ÿ
     jb no_digit
      
     mov ah,0
@@ -205,7 +205,7 @@ _get_num_:
     pop ax     
 get_num_ endp    
 
-;ÒÔahÎªÑ¡Ïî£¬ah=0¡¢1¡¢2·Ö±ğ´ú±íÈëÕ»¡¢³öÕ»¡¢ÏÔÊ¾×Ö·û´®             
+;ä»¥ahä¸ºé€‰é¡¹ï¼Œah=0ã€1ã€2åˆ†åˆ«ä»£è¡¨å…¥æ ˆã€å‡ºæ ˆã€æ˜¾ç¤ºå­—ç¬¦ä¸²             
 num_stk proc 
     jmp short num_start
 num_start:
@@ -236,7 +236,7 @@ num_pop:
     je sret 
     dec top
     mov bx,top
-    mov al,[bx];½«³öÕ»×Ö·û·ÅÈëalÖĞ 
+    mov al,[bx];å°†å‡ºæ ˆå­—ç¬¦æ”¾å…¥alä¸­ 
     mov [bx],'$' 
     jmp sret
        
@@ -246,14 +246,14 @@ num_show:
     cmp top,0 
     je sret                  
     
-    ;ÒÆ¶¯¹â±êÎ»ÖÃ
+    ;ç§»åŠ¨å…‰æ ‡ä½ç½®
     mov ah,02h
     mov bh,0
     mov dh,12
     mov dl,10+23
     int 10h          
     
-    ;ÏÔÊ¾×Ö·û´®       
+    ;æ˜¾ç¤ºå­—ç¬¦ä¸²       
     mov ax,num_input
     mov ds,ax
     mov dx,0h
@@ -266,7 +266,7 @@ sret:
     pop bx
     ret
 num_stk endp
-                
+;è¾“å…¥éæ•°å­—çš„å¤„ç†æ–¹æ³•                
 no_digit proc  
     cmp ah,0ch
     je minus  
@@ -309,7 +309,7 @@ end_pro proc
     mov ax,4c00h
     int 21h  
 end_pro endp
-   
+;å¤„ç†16è¿›åˆ¶fibonacci   
 do_16 proc    
     call clean_screen
     cmp top,0 
@@ -329,7 +329,7 @@ do_16 proc
     mov dx,0
     mov cx,top
     dec cx  
-    ;»ñÈ¡Ê®½øÖÆÊı²¢·ÅÔÚaxÖĞ      
+    ;è·å–åè¿›åˆ¶æ•°å¹¶æ”¾åœ¨axä¸­      
     cmp byte ptr ds:[si],'-'
     je below_zero_10             
     cmp byte ptr ds:[si],'$'    
@@ -345,7 +345,7 @@ get_num_10:
     loop get_num_10  
     mov bx,10 
     div bx
-    ;axµÄÖµÓ¦Ğ¡ÓÚµÈÓÚ49
+    ;axçš„å€¼åº”å°äºç­‰äº49
     cmp ax,31h 
     ja out_range_10 
     cmp dx,0
@@ -380,7 +380,7 @@ do_16_ret:
     pop ax
     ret                                                
 do_16 endp
-       
+;æ•°å­—è¶Šç•Œï¼Ÿ       
 out_range proc
     call clean_screen
     push ax
@@ -389,14 +389,14 @@ out_range proc
     push ds   
     push di
     push cx
-    ;ÒÆ¶¯¹â±êÎ»ÖÃ
+    ;ç§»åŠ¨å…‰æ ‡ä½ç½®
     mov ah,02h
     mov bh,0
     mov dh,12
     mov dl,25
     int 10h          
     
-    ;ÏÔÊ¾×Ö·û´®       
+    ;æ˜¾ç¤ºå­—ç¬¦ä¸²       
     mov ax,warn
     mov ds,ax
     mov dx,offset w_range
@@ -412,7 +412,7 @@ show_out0:
     inc di
     inc di
     loop show_out0
-    ;ÏÔÊ¾press to continue
+    ;æ˜¾ç¤ºpress to continue
     mov ah,02h
     mov bh,0
     mov dh,13
@@ -443,7 +443,7 @@ show_out1:
     pop ax
     ret
 out_range endp
-                     
+;æ•°å­—å°äº0ï¼Ÿ                     
 below_zero proc
     call clean_screen
     push ax
@@ -452,14 +452,14 @@ below_zero proc
     push ds   
     push di
     push cx
-    ;ÒÆ¶¯¹â±êÎ»ÖÃ
+    ;ç§»åŠ¨å…‰æ ‡ä½ç½®
     mov ah,02h
     mov bh,0
     mov dh,12
     mov dl,25
     int 10h          
     
-    ;ÏÔÊ¾×Ö·û´®       
+    ;æ˜¾ç¤ºå­—ç¬¦ä¸²       
     mov ax,warn
     mov ds,ax
     mov dx,offset w_below_zero
@@ -475,7 +475,7 @@ show_out2:
     inc di
     inc di
     loop show_out2
-    ;ÏÔÊ¾press to continue
+    ;æ˜¾ç¤ºpress to continue
     mov ah,02h
     mov bh,0
     mov dh,13
@@ -506,7 +506,7 @@ show_out3:
     pop ax
     ret
 below_zero endp
-
+;è®¾ç½®è­¦å‘Š
 set_warn proc  ;set warning
     push ax
     push ds
@@ -522,7 +522,7 @@ set_warn proc  ;set warning
     pop ax    
     ret
 set_warn endp   
-
+;æ’¤é”€è­¦å‘Š
 cancel_warn proc  ;cancel warning
     push ax
     push ds  
@@ -544,7 +544,7 @@ cancel_warn endp
 ;    f1_16 dd 0
 ;    f2_16 dd 0
 ;radix_16_stk ends   
-   
+;é‡ç½®16è¿›åˆ¶æ•°æ®æ®µ   
 reset_16 proc   
     push bx
     push cx
@@ -586,7 +586,7 @@ reset_16_loop3:
     pop bx
     ret
 reset_16 endp
-    
+;æ‰“å°16è¿›åˆ¶åºåˆ—    
 print_16 proc 
     push di
     push si          
@@ -612,7 +612,7 @@ print_16 proc
     mov bx,0    
 final_loop_16:  
     push cx
-    ;Êä³öf2_16£¬²¢Ê¹µÃtmp=f2 f2=f1+f2 f1=tmp   
+    ;è¾“å‡ºf2_16ï¼Œå¹¶ä½¿å¾—tmp=f2 f2=f1+f2 f1=tmp   
     mov ax,offset f2_16
     add ax,3
     mov di,ax
@@ -623,9 +623,9 @@ show_f2_16:
     push bx 
     mov bx,ax
     shr al,4
-    mov ah,al;´æ¸ß4Î»
+    mov ah,al;å­˜é«˜4ä½
     mov al,bl
-    and al,00001111b;´æµÍ4Î»  
+    and al,00001111b;å­˜ä½4ä½  
     pop bx      
            
     cmp ah,9
@@ -653,7 +653,7 @@ change_to_char_16_l:
     add si,2
     dec di
     loop show_f2_16  
-    add si,2 ;ÍùºóÁ½¸ö×Ö½Ú£¬ÎªÁË±£Ö¤Êı¾İ¼äÓĞ¼ä¸ô
+    add si,2 ;å¾€åä¸¤ä¸ªå­—èŠ‚ï¼Œä¸ºäº†ä¿è¯æ•°æ®é—´æœ‰é—´éš”
     push si
       
     mov di,offset f2_16
@@ -669,7 +669,7 @@ swap_tmp_16:
     mov di,offset f1_16
     mov si,offset f2_16  
     mov cx,2    
-    clc;Çå³ı½øÎ»
+    clc;æ¸…é™¤è¿›ä½
 add_f2_16:
     mov ax,word ptr [di] 
     adc ax,word ptr [si] 
@@ -714,7 +714,7 @@ print_16 endp
 ;    f1_10 db 5 dup(0)
 ;    f2_10 db 5 dup(0)
 ;radix_10_stk ends     
-
+;é‡ç½®åè¿›åˆ¶æ•°æ®æ®µ
 reset_10 proc 
     push bx  
     push cx
@@ -757,7 +757,7 @@ reset_10_loop3:
     pop bx
     ret
 reset_10 endp
-
+;æ‰“å°åè¿›åˆ¶æ•°æ®
 print_10 proc   
     push di
     push si          
@@ -794,9 +794,9 @@ show_f_10:
     push bx 
     mov bx,ax
     shr al,4
-    mov ah,al;´æ¸ß4Î»
+    mov ah,al;å­˜é«˜4ä½
     mov al,bl
-    and al,00001111b;´æµÍ4Î»  
+    and al,00001111b;å­˜ä½4ä½  
     pop bx 
     
     add ah,30h 
