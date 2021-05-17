@@ -1,15 +1,23 @@
 # Just Some_Codes
-It'will contain something I have learned 
+It'will contain something I have learned  
+
 Enjoy it!
 ## .vscode
 It contains some data structure based on C
 ## Library
 It's an Library Management System based on C
 ## busRunningSimulation
-Just some silly codes written by Java
+A simulation for the buses ( with an animation, but I didn't show it as a demo)  
+
+**A big assignment in my Java course**
 ## NineChainOfRings
 a guider for Chinese Nine Chain of Rings game
 ## calDate
+In this program, I use some algorithms and create a class Date 
+**What you can do?**  
+1. Create a date object with a date
+2. Use some functions and you will know the days between any two dates
+ 
 This program can help you to caculate some works of Date
 ## music
 This is a full assembly code. 
