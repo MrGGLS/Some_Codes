@@ -10,8 +10,10 @@ inNum ends
 warn segment
     w_range db 'the number is out of range...','$' ;length=29
     w_below_zero db 'the number must be positive!','$' ;length=28 
-    w_restart db 'press any key to continue...','$';length=28    
-    is_warn dw 0
+    w_restart db 'press any key to continue...','$';length=28 
+    w_end db 'are you kidding me? see you~','$';length=28   
+    is_warn dw 0   
+    w_count dw 0
 warn ends
 ;…Ë÷√ ‰»Î ˝◊÷◊÷∑˚’ª
 num_input segment
@@ -30,7 +32,7 @@ pre_data segment
 pre_data ends
 ;…Ë÷√’ª∂Œ
 stk segment
-    db 200h dup(0)   
+    db 100h dup(0)   
 stk ends
 ;œ‘ æ◊÷∑˚¥Æ  
 
@@ -634,9 +636,13 @@ set_warn proc  ;set warning
     
     mov ax,warn
     mov ds,ax
-    mov di,offset is_warn  
-    mov word ptr [di],1  
-    
+    mov is_warn,1 
+    inc w_count
+    cmp w_count,3 
+    jne set_warn_ret
+    call exit_show
+set_warn_ret:        
+        
     pop di
     pop ds
     pop ax    
@@ -650,14 +656,59 @@ cancel_warn proc  ;cancel warning
     
     mov ax,warn
     mov ds,ax
-    mov di,offset is_warn  
-    mov word ptr [di],0  
+    mov is_warn,0
     
     pop di
     pop ds
     pop ax    
     ret
 cancel_warn endp    
+
+;—”≥Ÿ ±º‰  
+delay proc      
+    push cx
+    mov cx,0ffffh
+end_loop: 
+    push cx
+    mov cx,66h
+end_loop_:       
+    nop   
+    loop end_loop_
+    pop cx
+    loop end_loop  
+    pop cx
+    ret  
+delay endp
+ 
+exit_show proc
+    call clean_screen
+    ;“∆∂Øπ‚±ÍŒª÷√
+    mov ah,02h
+    mov bh,0
+    mov dh,12
+    mov dl,25
+    int 10h          
+    
+    ;œ‘ æ◊÷∑˚¥Æ       
+    mov ax,warn
+    mov ds,ax
+    mov dx,offset w_end
+    mov ah,09h
+    int 21h     
+    
+    mov ax,0b800h
+    mov ds,ax
+    mov di,160*12+51
+    mov cx,28
+show_out4:
+    mov ds:[di],11110100b
+    inc di
+    inc di
+    loop show_out4 
+    call delay 
+    call clean_screen
+    call end_pro
+exit_show endp 
    
 reset_16 proc   
     push bx
@@ -721,11 +772,22 @@ print_16 proc
     call clean_screen  
     
     mov ax,num_input
-    mov ds,ax
-    mov si,offset fib_length
-    mov cx,[si]
+    mov ds,ax    
+    cmp fib_length,0
+    ja short p_16_ok      
+    pop ax
+    pop bx
+    pop es
+    pop cx
+    pop si
+    pop di
+    jmp far restart
+p_16_ok:
+    mov cx,fib_length
      
-    call reset_16   
+    call reset_16  
+    
+     
     
     mov bx,radix_16_stk  
     mov ds,bx  
@@ -823,6 +885,7 @@ swap_f1_16:
 ok2:
     loop final_loop_16       
 
+16_ret:
     pop ax
     pop bx
     pop es
@@ -895,9 +958,18 @@ print_10 proc
     call clean_screen
     
     mov ax,num_input
-    mov ds,ax
-    mov si,offset fib_length
-    mov cx,[si]
+    mov ds,ax  
+    cmp fib_length,0
+    ja short p_10_ok  
+    pop ax
+    pop bx
+    pop es
+    pop cx
+    pop si
+    pop di
+    jmp far restart
+p_10_ok:
+    mov cx,fib_length
     
     call reset_10
     
@@ -986,7 +1058,8 @@ swap_f1_10:
     mov bx,0
 ok3:
     loop final_loop_10 
-    
+
+10_ret:    
     pop ax
     pop bx
     pop es
