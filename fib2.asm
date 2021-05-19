@@ -21,12 +21,12 @@ num_input segment
 num_input ends     
 ;保存上一次的初始数据
 pre_data segment
-    p_tmp_16 dd 0
-    p_f1_16 dd 0
-    p_f2_16 dd 0
-    p_tmp_10 db 5 dup(0)
-    p_f1_10 db 5 dup(0)
-    p_f2_10 db 5 dup(0)
+    p_tmp_16 dw 5 dup(0)
+    p_f1_16 dw 5 dup(0)
+    p_f2_16 dw 5 dup(0)
+    p_tmp_10 db 9 dup(0)
+    p_f1_10 db 9 dup(0)
+    p_f2_10 db 9 dup(0)
 pre_data ends
 ;设置栈段
 stk segment
@@ -36,15 +36,15 @@ stk ends
 
 ;设置16进制的数据段
 radix_16_stk segment
-    tmp_16 dd 0
-    f1_16 dd 0
-    f2_16 dd 0
+    tmp_16 dw 5 dup(0)
+    f1_16 dw 5 dup(0)
+    f2_16 dw 5 dup(0)
 radix_16_stk ends
 ;设置10进制的数据段   
 radix_10_stk segment
-    tmp_10 db 5 dup(0)
-    f1_10 db 5 dup(0)
-    f2_10 db 5 dup(0)
+    tmp_10 db 9 dup(0)
+    f1_10 db 9 dup(0)
+    f2_10 db 9 dup(0)
 radix_10_stk ends
 
 code segment 
@@ -470,8 +470,8 @@ get_num_10:
     loop get_num_10  
     mov bx,10 
     div bx
-    ;ax的值应小于等于48
-    cmp ax,30h 
+    ;ax的值应小于等于100
+    cmp ax,64h 
     ja out_range_10 
     cmp dx,0
     ja out_range_10 
@@ -673,7 +673,7 @@ reset_16 proc
     mov es,bx
     mov si,offset p_tmp_16
     mov di,offset tmp_16
-    mov cx,4
+    mov cx,9
 reset_16_loop1:        
     mov bl,byte ptr es:[si]
     mov byte ptr [di],bl  
@@ -683,7 +683,7 @@ reset_16_loop1:
     
     mov di,offset f1_16 
     mov si,offset p_f1_16
-    mov cx,4
+    mov cx,9
 reset_16_loop2: 
     mov bl,byte ptr es:[si]
     mov byte ptr [di],bl    
@@ -693,7 +693,7 @@ reset_16_loop2:
     
     mov di,offset f2_16  
     mov si,offset p_f2_16 
-    mov cx,4
+    mov cx,9
 reset_16_loop3:
     mov bl,byte ptr es:[si]
     mov byte ptr [di],bl  
@@ -731,15 +731,15 @@ print_16 proc
     mov ds,bx  
     mov bx,0b800h 
     mov es,bx
-    mov si,8
+    mov si,4
     mov bx,0    
 final_loop_16:  
     push cx
     ;输出f2_16，并使得tmp=f2 f2=f1+f2 f1=tmp   
     mov ax,offset f2_16
-    add ax,3
+    add ax,8
     mov di,ax
-    mov cx,4  
+    mov cx,9  
 
 show_f2_16:        
     mov al,byte ptr ds:[di]   
@@ -781,44 +781,44 @@ change_to_char_16_l:
       
     mov di,offset f2_16
     mov si,offset tmp_16   
-    mov cx,2
+    mov cx,9
 swap_tmp_16:
-    mov ax,word ptr [di]
-    mov word ptr [si],ax
-    add di,2
-    add si,2
+    mov al,byte ptr [di]
+    mov byte ptr [si],al
+    inc di
+    inc si
     loop swap_tmp_16   
     
     mov di,offset f1_16
     mov si,offset f2_16  
-    mov cx,2    
+    mov cx,9    
     clc;清除进位
 add_f2_16:
-    mov ax,word ptr [di] 
-    adc ax,word ptr [si] 
+    mov al,byte ptr [di] 
+    adc al,byte ptr [si] 
     pushf
-    mov word ptr [si],ax   
-    add di,2
-    add si,2    
+    mov byte ptr [si],al   
+    inc di
+    inc si   
     popf
     loop add_f2_16 
     
     mov di,offset tmp_16
     mov si,offset f1_16
-    mov cx,2
+    mov cx,9
 swap_f1_16:
-    mov ax,word ptr [di]
-    mov word ptr [si],ax
-    add di,2
-    add si,2
+    mov al,byte ptr [di]
+    mov byte ptr [si],al
+    inc di
+    inc si
     loop swap_f1_16 
     
     pop si
     pop cx     
     inc bx
-    cmp bx,8    
+    cmp bx,4    
     jne ok2   
-    add si,16  
+    add si,8  
     mov bx,0
 ok2:
     loop final_loop_16       
@@ -847,7 +847,7 @@ reset_10 proc
     
     mov di,offset tmp_10   
     mov si,offset p_tmp_10
-    mov cx,5
+    mov cx,9
 reset_10_loop1: 
     mov bl,byte ptr es:[si]
     mov byte ptr [di],bl
@@ -857,7 +857,7 @@ reset_10_loop1:
     
     mov di,offset f1_10
     mov si,offset p_f1_10
-    mov cx,5
+    mov cx,9
 reset_10_loop2:
     mov bl,byte ptr es:[si]
     mov byte ptr [di],bl
@@ -867,7 +867,7 @@ reset_10_loop2:
     
     mov di,offset f2_10
     mov si,offset p_f2_10 
-    mov cx,5
+    mov cx,9
 reset_10_loop3:
     mov bl,byte ptr es:[si]
     mov byte ptr [di],bl
@@ -905,16 +905,16 @@ print_10 proc
     mov ds,bx
     mov bx,0b800h 
     mov es,bx
-    mov si,2
+    mov si,4
     mov bx,0  
 final_loop_10: 
     push bx
     push cx   
     
     mov ax,offset f2_10
-    add ax,4     
+    add ax,8     
     mov di,ax  
-    mov cx,5  
+    mov cx,9  
 show_f_10:  
     mov al,byte ptr ds:[di]   
     push bx 
@@ -943,7 +943,7 @@ show_f_10:
     
     mov di,offset f2_10
     mov si,offset tmp_10  
-    mov cx,5
+    mov cx,9
 swap_tmp_10:
     mov al,byte ptr [di]
     mov byte ptr [si],al 
@@ -953,7 +953,7 @@ swap_tmp_10:
     
     mov di,offset f1_10
     mov si,offset f2_10  
-    mov cx,5
+    mov cx,9
     clc    
 add_f2_10:
     mov al,byte ptr [di]  
@@ -968,7 +968,7 @@ add_f2_10:
       
     mov di,offset tmp_10
     mov si,offset f1_10  
-    mov cx,5
+    mov cx,9
 swap_f1_10:
     mov al,byte ptr [di]
     mov byte ptr [si],al
@@ -980,9 +980,9 @@ swap_f1_10:
     pop cx 
     pop bx 
     inc bx
-    cmp bx,7    
+    cmp bx,4    
     jne ok3   
-    add si,6  
+    add si,8  
     mov bx,0
 ok3:
     loop final_loop_10 
