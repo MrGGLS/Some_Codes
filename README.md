@@ -44,7 +44,7 @@ This program can get you a fibonacci series and its length is depended on your i
 ![img](https://github.com/MrGGLS/Some_Codes/blob/master/fib_demo.gif)
 
 ## fib2
-Just a update for fib.  
+Just a update for fib (support bigger M).  
 
 **support three parameters** 
 1. N means f1
