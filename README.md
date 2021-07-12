@@ -56,3 +56,6 @@ Just a update for fib (support bigger M).
 **A demo for this program**  
 
 ![img](https://github.com/MrGGLS/Some_Codes/blob/master/fib2_demo.gif)
+## 数据科学理论与实践数据集和代码
+1. 我将所有的例题代码集成为一个文件（最后美国地图的代码过时了）
+2. 数据集都是自己在网上找的，原书配套的资源下载不了（不知道为什么）
