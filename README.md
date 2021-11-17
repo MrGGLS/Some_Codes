@@ -32,7 +32,7 @@ This is a full assembly code.
 **A demo for this program** 
 
 ![img](https://github.com/MrGGLS/Some_Codes/blob/master/music_demo.gif)
-## fib
+## fib 汇编写的生成斐波那契数列程序
 This program can get you a fibonacci series and its length is depended on your input number  
 ### keys
 1. **space**: change the base of the series
@@ -43,7 +43,7 @@ This program can get you a fibonacci series and its length is depended on your i
 
 ![img](https://github.com/MrGGLS/Some_Codes/blob/master/fib_demo.gif)
 
-## fib2
+## fib2 fib升级版，可指定初始的 f1 和 f2
 Just a update for fib (support bigger M).  
 
 **support three parameters** 
