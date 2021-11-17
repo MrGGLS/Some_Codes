@@ -2,24 +2,24 @@
 It'will contain something I have learned  
 
 Enjoy it!
-## .vscode
+## .vscode 瞎写的数据结构
 It contains some data structure based on C
-## Library
+## Library 图书管理系统（C语言）
 It's an Library Management System based on C
-## busRunningSimulation
+## busRunningSimulation 西电Java大作业（动画模拟）
 A simulation for the buses ( with an animation, but I didn't show it as a demo)  
 
 **A big assignment in my Java course**
-## NineChainOfRings
+## NineChainOfRings 九连环
 a guider for Chinese Nine Chain of Rings game
-## calDate
+## calDate 计算日期函数
 In this program, I use some algorithms and create a class Date 
 **What you can do?**  
 1. Create a date object with a date
 2. Use some functions and you will know the days between any two dates
  
 This program can help you to caculate some works of Date
-## music
+## music 用汇编写的播放器
 This is a full assembly code. 
 
 **An reminder**: you had better to compile it in emu8086 and then run music.exe in DosBox 
