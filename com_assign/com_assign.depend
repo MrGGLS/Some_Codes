@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1637296500 source:e:\code_workplace\mycalculator\com_assign\main.c
+	<stdio.h>
+	<stdlib.h>
+	"com_assign.parser.h"
+
+1637335288 e:\code_workplace\mycalculator\com_assign\com_assign.parser.h
+
+1637323650 source:e:\code_workplace\mycalculator\com_assign\com_assign.c
+	<stdio.h>
+	<stdlib.h>
+	<stdarg.h>
+	<string.h>
+	<math.h>
+	"com_assign.h"
+	"com_assign.parser.h"
+
+1637319476 e:\code_workplace\mycalculator\com_assign\com_assign.h
+
+1637335284 source:e:\code_workplace\mycalculator\com_assign\com_assign.y
+	<stdio.h>
+	<stdlib.h>
+	"com_assign.h"
+
+1637306128 source:e:\code_workplace\mycalculator\com_assign\com_assign.l
+	<stdio.h>
+	<stdlib.h>
+	<stdarg.h>
+	"com_assign.h"
+	"com_assign.parser.h"
+
