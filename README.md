@@ -64,5 +64,5 @@ Just a update for fib (support bigger M).
 **将指定代码翻译成语法树并用graphiz生成对应的图像**
 + 词法分析器：flex
 + 语法分析器：bison
-+ 辅助语言：C
++ 辅助语言：C  
 [所生成的语法树](https://github.com/MrGGLS/Some_Codes/blob/master/com_assign/tree.pdf)
